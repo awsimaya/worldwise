@@ -2,6 +2,7 @@
 const Quiz = (() => {
 
   let mode = 'capital'; // 'capital' | 'name' | 'findit' | 'flashcard'
+  let quizContinent = 'All';
   let queue = [];
   let current = null;
   let sessionCorrect = 0, sessionWrong = 0, sessionStreak = 0;
@@ -11,7 +12,9 @@ const Quiz = (() => {
   // DOM refs (populated on init)
   let D = {};
 
-  const COUNTRY_IDS = () => Object.keys(COUNTRIES);
+  const COUNTRY_IDS = () => Object.keys(COUNTRIES).filter(id =>
+    quizContinent === 'All' || COUNTRIES[id].continent === quizContinent
+  );
 
   // ─── Weighted queue: lower mastery = more likely ───
   function buildQueue(count = 10) {
@@ -74,6 +77,47 @@ const Quiz = (() => {
       fiCorrect:     document.getElementById('fi-correct'),
       fiWrong:       document.getElementById('fi-wrong'),
     };
+
+    // Continent filter buttons
+    const filterContainer = document.getElementById('quiz-continent-filter');
+    const continents = ['All', ...Object.keys(CONTINENTS)];
+    continents.forEach(cont => {
+      const btn = document.createElement('button');
+      btn.className = 'continent-filter-btn' + (cont === 'All' ? ' active' : '');
+      btn.dataset.continent = cont;
+      if (cont === 'All') {
+        btn.textContent = '🌍 All';
+        btn.style.background = '#E8F2FF';
+        btn.style.borderColor = '#5B4FE8';
+        btn.style.color = '#5B4FE8';
+      } else {
+        const col = CONTINENTS[cont].color;
+        btn.textContent = cont;
+        btn.style.background = col;
+      }
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.continent-filter-btn').forEach(b => {
+          b.classList.remove('active');
+          const c = b.dataset.continent;
+          if (c === 'All') {
+            b.style.borderColor = 'transparent';
+            b.style.color = '#6674A8';
+            b.style.background = '#FFFFFF';
+          }
+        });
+        btn.classList.add('active');
+        if (cont === 'All') {
+          btn.style.background = '#E8F2FF';
+          btn.style.borderColor = '#5B4FE8';
+          btn.style.color = '#5B4FE8';
+        }
+        quizContinent = cont;
+        queue = buildQueue(20);
+        if (mode === 'findit') startFindIt();
+        else nextQuestion();
+      });
+      filterContainer.appendChild(btn);
+    });
 
     // Mode buttons
     D.modeBtns.forEach(btn => {

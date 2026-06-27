@@ -414,6 +414,32 @@ header {
   box-shadow: 0 3px 10px rgba(91,79,232,0.3);
 }
 
+/* ─── Quiz continent filter ─── */
+.quiz-continent-filter {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.continent-filter-btn {
+  padding: 5px 13px;
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background: var(--surface);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: var(--text-muted);
+}
+.continent-filter-btn:hover { opacity: 0.85; }
+.continent-filter-btn.active {
+  color: var(--navy);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
 .quiz-content {
   flex: 1;
   overflow-y: auto;
