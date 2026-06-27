@@ -412,7 +412,6 @@ const Quiz = (() => {
     D.fiCorrect.textContent = fiCorrect;
     D.fiWrong.textContent = fiWrong;
     MapRenderer.clearAllHighlights();
-    MapRenderer.highlightCountry(findItCurrent, 'target');
   }
 
   function handleFindItClick(numId) {
