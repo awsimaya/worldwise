@@ -94,6 +94,7 @@ const Quiz = (() => {
         const col = CONTINENTS[cont].color;
         btn.textContent = cont;
         btn.style.background = col;
+        btn.style.color = '#131840';
       }
       btn.addEventListener('click', () => {
         document.querySelectorAll('.continent-filter-btn').forEach(b => {

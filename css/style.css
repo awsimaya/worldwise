@@ -428,10 +428,10 @@ header {
   background: var(--surface);
   font-family: inherit;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.18s;
-  color: var(--text-muted);
+  color: var(--navy);
 }
 .continent-filter-btn:hover { opacity: 0.85; }
 .continent-filter-btn.active {
