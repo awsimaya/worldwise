@@ -293,9 +293,9 @@ const Quiz = (() => {
     const card = document.createElement('div');
     card.id = 'flashcard-el';
     card.style.cssText = `
-      background: linear-gradient(135deg, #EEF4FF, #E0EAFF);
-      border-radius: 16px;
-      border: 2.5px solid #D1DFF5;
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 2px solid #CCE0F8;
       padding: 30px 20px;
       text-align: center;
       cursor: pointer;
@@ -310,19 +310,20 @@ const Quiz = (() => {
     `;
     card.innerHTML = `
       <div style="font-size:3.5rem">${c.flag}</div>
-      <div style="font-size:1.4rem;font-weight:800;color:#1E2A4A">${c.name}</div>
-      <div style="font-size:0.8rem;color:#6B80A8;font-weight:600">Tap to reveal capital →</div>
+      <div style="font-size:1.35rem;font-weight:900;color:#131840;font-family:Nunito,sans-serif">${c.name}</div>
+      <div style="font-size:0.78rem;color:#6674A8;font-weight:700;font-family:Nunito,sans-serif">Tap to reveal capital →</div>
     `;
 
     const front = card.innerHTML;
     const back = `
       <div style="font-size:3.5rem">${c.flag}</div>
-      <div style="font-size:0.8rem;font-weight:700;color:#6B80A8;text-transform:uppercase;letter-spacing:0.5px">Capital of ${c.name}</div>
-      <div style="font-size:1.8rem;font-weight:900;color:#1E2A4A">${c.capital}</div>
+      <div style="font-size:0.75rem;font-weight:800;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.7px;font-family:Nunito,sans-serif">Capital of ${c.name}</div>
+      <div style="font-size:1.8rem;font-weight:900;color:#F5C84A;font-family:Nunito,sans-serif">${c.capital}</div>
     `;
 
     card.addEventListener('click', () => {
       if (!fcFlipped) {
+        card.style.background = '#131840';
         card.innerHTML = back;
         fcFlipped = true;
         // Show know / don't know buttons
