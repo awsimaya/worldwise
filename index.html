@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorldWise 🌍 — Learn Countries & Capitals</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="logo">
+    <span>🌍</span> WorldWise
+  </div>
+  <div class="header-stats">
+    <div class="stat-chip">
+      <span class="icon">⭐</span>
+      XP: <span id="xp-count">0</span>
+    </div>
+    <div class="stat-chip">
+      <span class="icon">🔥</span>
+      Streak: <span id="streak-count">0</span>
+    </div>
+    <div class="stat-chip">
+      <span class="icon">🏅</span>
+      Mastered: <span id="mastered-count">0</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ NAV TABS ═══ -->
+<div class="nav-tabs">
+  <button class="tab-btn active" data-tab="explore">
+    <span class="tab-icon">🗺️</span> Explore
+  </button>
+  <button class="tab-btn" data-tab="quiz">
+    <span class="tab-icon">🧠</span> Quiz
+  </button>
+  <button class="tab-btn" data-tab="progress">
+    <span class="tab-icon">📊</span> My Progress
+  </button>
+</div>
+
+<!-- ═══ MAIN BODY ═══ -->
+<div class="app-body">
+
+  <!-- ─── MAP PANE ─── -->
+  <div id="map-pane">
+    <svg id="world-svg" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet">
+      <!-- Country paths are injected by map.js -->
+    </svg>
+
+    <div id="map-tooltip"></div>
+
+    <!-- Find It overlay (shows on top of map during quiz) -->
+    <div id="find-it-overlay">
+      <div class="find-it-prompt">Click on the country!</div>
+      <div class="find-it-target">
+        <span class="find-it-flag" id="fi-target-flag">🏳️</span>
+        <span id="fi-target-name">Loading...</span>
+      </div>
+      <div class="find-it-score">
+        <span class="fi-correct">✅ <span id="fi-correct">0</span></span>
+        <span class="fi-wrong">❌ <span id="fi-wrong">0</span></span>
+      </div>
+    </div>
+
+    <!-- Zoom controls -->
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoom-in"    title="Zoom in">＋</button>
+      <button class="zoom-btn" id="zoom-reset" title="Reset view">⌂</button>
+      <button class="zoom-btn" id="zoom-out"   title="Zoom out">－</button>
+    </div>
+  </div>
+
+  <!-- ─── SIDE PANEL ─── -->
+  <div id="side-panel">
+
+    <!-- EXPLORE tab panel -->
+    <div id="info-panel">
+      <!-- Placeholder -->
+      <div class="info-placeholder">
+        <div class="big-icon">👆</div>
+        <strong>Click any country!</strong>
+        <p>Discover its capital, continent,<br>and a fun fact!</p>
+      </div>
+
+      <!-- Country card (hidden until a country is selected) -->
+      <div class="country-card">
+        <div class="card-header">
+          <div class="country-flag" id="card-flag">🏳️</div>
+          <div class="card-titles">
+            <div class="country-name" id="card-name">—</div>
+            <span class="continent-badge" id="continent-badge">—</span>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="row-icon">🏛️</div>
+          <div>
+            <div class="row-label">Capital City</div>
+            <div class="row-value" id="card-capital">—</div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="row-icon">🌐</div>
+          <div>
+            <div class="row-label">Continent</div>
+            <div class="row-value" id="card-continent">—</div>
+          </div>
+        </div>
+
+        <div class="fun-fact-box">
+          <div class="fact-label">⚡ Fun Fact</div>
+          <p id="card-fact">—</p>
+        </div>
+
+        <div class="mastery-bar-wrap">
+          <div class="mastery-label">
+            <span>Your Mastery</span>
+            <span id="mastery-label-val">Not started</span>
+          </div>
+          <div class="mastery-bar-bg">
+            <div class="mastery-bar-fill" id="mastery-bar-fill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ tab panel -->
+    <div id="quiz-panel" style="display:none">
+      <div class="quiz-mode-select">
+        <button class="mode-btn active" data-mode="capital">🏛️ Capitals</button>
+        <button class="mode-btn" data-mode="name">🌍 Country Names</button>
+        <button class="mode-btn" data-mode="findit">🎯 Find It!</button>
+        <button class="mode-btn" data-mode="flashcard">🃏 Flashcards</button>
+        <button class="mode-btn" data-mode="type">✏️ Type It</button>
+      </div>
+
+      <div class="quiz-content">
+        <!-- Quiz question card -->
+        <div class="quiz-question">
+          <div class="quiz-prompt">What is the capital of...</div>
+          <div class="quiz-flag" id="quiz-flag">🌍</div>
+          <div class="quiz-country-name" id="quiz-country-name">Loading...</div>
+          <div class="quiz-subtitle" id="quiz-subtitle"></div>
+        </div>
+
+        <!-- Multiple choice -->
+        <div class="choices-grid"></div>
+
+        <!-- Type answer -->
+        <div class="type-answer-wrap" style="display:none">
+          <input type="text" placeholder="Type the capital city..." autocomplete="off" spellcheck="false">
+          <button class="submit-btn">Submit Answer</button>
+        </div>
+
+        <!-- Feedback -->
+        <div class="answer-feedback">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="feedback-icon">✅</span>
+            <span class="feedback-msg"></span>
+          </div>
+        </div>
+
+        <!-- Next button -->
+        <button class="next-btn">Next Question →</button>
+      </div>
+
+      <div class="quiz-score-bar">
+        <div class="score-item score-correct">✅ <span id="sq-correct">0</span></div>
+        <div class="score-item score-wrong">❌ <span id="sq-wrong">0</span></div>
+        <div class="score-item score-streak">🔥 Streak: <span id="sq-streak">0</span></div>
+      </div>
+    </div>
+
+    <!-- PROGRESS tab panel -->
+    <div id="progress-panel" style="display:none">
+      <div class="progress-header">
+        <h2>📊 Your Progress</h2>
+        <p id="prog-subtitle">0 of 0 countries mastered</p>
+      </div>
+
+      <div class="overall-progress">
+        <div class="big-percent" id="prog-percent">0%</div>
+        <div class="big-percent-label">of all countries mastered</div>
+        <div class="progress-bar-white">
+          <div class="progress-bar-fill-white" id="prog-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="continent-section">
+        <h3>By Continent — click to filter map</h3>
+        <div id="continent-list"></div>
+      </div>
+
+      <div class="achievements-section">
+        <h3>🏆 Achievements</h3>
+        <div class="achievements-grid" id="achievements-grid"></div>
+      </div>
+    </div>
+
+  </div><!-- /side-panel -->
+</div><!-- /app-body -->
+
+<!-- ─── Confetti canvas ─── -->
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ─── Toast container ─── -->
+<div class="toast-container"></div>
+
+<!-- ─── Scripts ─── -->
+<script src="data/world-paths.js"></script>
+<script src="data/countries.js"></script>
+<script src="js/sounds.js"></script>
+<script src="js/confetti.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/map.js"></script>
+<script src="js/quiz.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
