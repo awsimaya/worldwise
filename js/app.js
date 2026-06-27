@@ -62,6 +62,8 @@ const App = (() => {
     quizPanel.style.display     = tab === 'quiz'     ? 'flex'  : 'none';
     progressPanel.style.display = tab === 'progress' ? 'flex'  : 'none';
 
+    MapRenderer.setTooltipEnabled(tab === 'explore');
+
     if (tab === 'explore') {
       MapRenderer.clearAllHighlights();
       document.getElementById('find-it-overlay').classList.remove('visible');

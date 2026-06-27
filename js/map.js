@@ -6,6 +6,7 @@ const MapRenderer = (() => {
   let isPanning = false, panStart = { x: 0, y: 0 };
   let onCountryClick = null;
   let onCountryHover = null;
+  let tooltipEnabled = true;
 
   function continentColor(continent) {
     return (CONTINENTS[continent] || { color: '#CBD5E1' }).color;
@@ -111,6 +112,7 @@ const MapRenderer = (() => {
   }
 
   function handleHover(e, numId, path) {
+    if (!tooltipEnabled) return;
     const country = COUNTRIES[numId];
     if (!country) return;
     const rect = svg.getBoundingClientRect();
@@ -186,5 +188,7 @@ const MapRenderer = (() => {
     applyTransform();
   }
 
-  return { buildSVG, setClickHandler, setHoverHandler, highlightCountry, clearAllHighlights, dimAllExcept, updateMasteryColors, zoomIn, zoomOut, resetView, panToCountry };
+  function setTooltipEnabled(val) { tooltipEnabled = val; if (!val) hideTooltip(); }
+
+  return { buildSVG, setClickHandler, setHoverHandler, highlightCountry, clearAllHighlights, dimAllExcept, updateMasteryColors, zoomIn, zoomOut, resetView, panToCountry, setTooltipEnabled };
 })();
